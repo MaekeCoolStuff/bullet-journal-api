@@ -86,8 +86,8 @@ namespace BulletJournalApi
                 };
             });
 
-            services.AddScoped<TaskService>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<TaskService>();
+            services.AddSingleton<IUserService, UserService>();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
