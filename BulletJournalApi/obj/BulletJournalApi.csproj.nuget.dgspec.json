@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projects\\BulletJournalApi\\BulletJournalApi\\BulletJournalApi.csproj": {}
+    "E:\\Projects\\bullet-journal-api\\BulletJournalApi\\BulletJournalApi.csproj": {}
   },
   "projects": {
-    "E:\\Projects\\BulletJournalApi\\BulletJournalApi\\BulletJournalApi.csproj": {
+    "E:\\Projects\\bullet-journal-api\\BulletJournalApi\\BulletJournalApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\BulletJournalApi\\BulletJournalApi\\BulletJournalApi.csproj",
+        "projectUniqueName": "E:\\Projects\\bullet-journal-api\\BulletJournalApi\\BulletJournalApi.csproj",
         "projectName": "BulletJournalApi",
-        "projectPath": "E:\\Projects\\BulletJournalApi\\BulletJournalApi\\BulletJournalApi.csproj",
+        "projectPath": "E:\\Projects\\bullet-journal-api\\BulletJournalApi\\BulletJournalApi.csproj",
         "packagesPath": "C:\\Users\\Mae van Dijk\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\BulletJournalApi\\BulletJournalApi\\obj\\",
+        "outputPath": "E:\\Projects\\bullet-journal-api\\BulletJournalApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
