@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using BulletJournalApi.Models;
 using BulletJournalApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletJournalApi.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TasksController : ControllerBase
     {
