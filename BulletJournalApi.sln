@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletJournalApi", "BulletJournalApi\BulletJournalApi.csproj", "{8DC4FE50-F414-4BA3-92AD-60852F6A6768}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BulletJournalApi", "BulletJournalApi\BulletJournalApi.csproj", "{8DC4FE50-F414-4BA3-92AD-60852F6A6768}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletJournal.Data", "BulletJournal.Data\BulletJournal.Data.csproj", "{8517D76E-79A0-472F-A219-F75208B55313}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletJournal.Domain", "BulletJournal.Domain\BulletJournal.Domain.csproj", "{2F3FDE9A-EEC2-4B8D-87DF-0A82E32B5FEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{8DC4FE50-F414-4BA3-92AD-60852F6A6768}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC4FE50-F414-4BA3-92AD-60852F6A6768}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DC4FE50-F414-4BA3-92AD-60852F6A6768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8517D76E-79A0-472F-A219-F75208B55313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8517D76E-79A0-472F-A219-F75208B55313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8517D76E-79A0-472F-A219-F75208B55313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8517D76E-79A0-472F-A219-F75208B55313}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F3FDE9A-EEC2-4B8D-87DF-0A82E32B5FEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F3FDE9A-EEC2-4B8D-87DF-0A82E32B5FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F3FDE9A-EEC2-4B8D-87DF-0A82E32B5FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F3FDE9A-EEC2-4B8D-87DF-0A82E32B5FEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,24 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using BulletJournalApi.Models;
 using BulletJournalApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson.Serialization;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson.Serialization.Conventions;
-using Newtonsoft.Json;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BulletJournal.Data;
+using BulletJournalApi.Helpers;
 
 namespace BulletJournalApi
 {
@@ -40,18 +36,14 @@ namespace BulletJournalApi
 
             ConventionRegistry.Register("Camel Case", conventionPack, _ => true);
 
-            //BsonClassMap.RegisterClassMap<Task>(cm => {
-            //    cm.AutoMap();
-            //});
+            services.Configure<ConfigSettings>(
+                Configuration.GetSection(nameof(ConfigSettings)));
 
-            services.Configure<BulletJournalDatabaseSettings>(
-                Configuration.GetSection(nameof(BulletJournalDatabaseSettings)));
+            services.AddSingleton<ConfigSettings>(sp =>
+                sp.GetRequiredService<IOptions<ConfigSettings>>().Value);
 
-            services.AddSingleton<IBulletJournalDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<BulletJournalDatabaseSettings>>().Value);
-
-            var settings = Configuration.GetSection(nameof(BulletJournalDatabaseSettings)).Get<BulletJournalDatabaseSettings>();
-            var key = Encoding.ASCII.GetBytes(settings.Secret);
+            var settings = Configuration.GetSection(nameof(ConfigSettings)).Get<ConfigSettings>();
+            var key = Encoding.ASCII.GetBytes(settings.AuthSecret);
 
             services.AddAuthentication(x =>
             {
@@ -66,7 +58,7 @@ namespace BulletJournalApi
                     {
                         var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                         var userId = context.Principal.Identity.Name;
-                        var user = userService.GetById(userId);
+                        var user = userService.GetById(int.Parse(userId));
                         if (user == null)
                         {
                             // return unauthorized if user no longer exists
@@ -86,9 +78,15 @@ namespace BulletJournalApi
                 };
             });
 
-            services.AddSingleton<TaskService>();
-            services.AddSingleton<IUserService, UserService>();
+            services.AddScoped<ItemService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddControllers();
+            services.AddDbContext<BulletJournalContext>(
+                options =>
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("BulletJournalConnection"));
+                }
+                );
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 

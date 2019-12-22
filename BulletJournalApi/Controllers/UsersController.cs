@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using BulletJournal.Domain;
+using BulletJournalApi.Helpers;
 using BulletJournalApi.Models;
 using BulletJournalApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -22,9 +24,9 @@ namespace BulletJournalApi.Controllers
     {
         private IUserService _userService;
         private IMapper _mapper;
-        private IBulletJournalDatabaseSettings _settings;
+        private ConfigSettings _settings;
 
-        public UsersController(IUserService userService, IMapper mapper, IBulletJournalDatabaseSettings settings)
+        public UsersController(IUserService userService, IMapper mapper, ConfigSettings settings)
         {
             _userService = userService;
             _mapper = mapper;
@@ -41,7 +43,7 @@ namespace BulletJournalApi.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_settings.Secret);
+            var key = Encoding.ASCII.GetBytes(_settings.AuthSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]

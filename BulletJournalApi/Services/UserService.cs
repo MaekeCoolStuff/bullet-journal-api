@@ -1,4 +1,6 @@
-﻿using BulletJournalApi.Models;
+﻿using BulletJournal.Data;
+using BulletJournal.Domain;
+using BulletJournalApi.Models;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -11,21 +13,18 @@ namespace BulletJournalApi.Services
     {
         User Authenticate(string username, string password);
         IEnumerable<User> GetAll();
-        User GetById(string id);
+        User GetById(int id);
         User Create(User user, string password);
         void Update(User user, string password = null);
-        void Delete(string id);
+        void Delete(int id);
     }
     public class UserService : IUserService
     {
-        private readonly IMongoCollection<User> _users;
+        private readonly BulletJournalContext _context;
 
-        public UserService(IBulletJournalDatabaseSettings settings)
+        public UserService(BulletJournalContext context)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _users = database.GetCollection<User>(settings.UsersCollectionName);
+            _context = context;
         }
 
         public User Authenticate(string username, string password)
@@ -33,7 +32,7 @@ namespace BulletJournalApi.Services
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _users.Find<User>(user => user.UserName == username).FirstOrDefault();
+            var user = _context.Users.Where<User>(user => user.UserName == username).FirstOrDefault();
 
             // check if username exists
             if (user == null)
@@ -49,7 +48,7 @@ namespace BulletJournalApi.Services
 
         public void Update(User userIn, string password = null)
         {
-            var user = _users.Find<User>(user => user.UserName == userIn.UserName).FirstOrDefault();
+            var user = _context.Users.Where<User>(user => user.UserName == userIn.UserName).FirstOrDefault();
 
             if (user == null)
                 throw new Exception("User not found");
@@ -71,7 +70,8 @@ namespace BulletJournalApi.Services
                 user.PasswordSalt = passwordSalt;
             }
 
-            _users.ReplaceOne<User>(user => user.Id == userIn.Id, user);
+            _context.Users.Update(user);
+            _context.SaveChanges();
         }
 
         public User Create(User userIn, string password)
@@ -80,7 +80,7 @@ namespace BulletJournalApi.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new Exception("Password is required");
 
-            if (_users.Find<User>(user => user.UserName == userIn.UserName).FirstOrDefault() != null)
+            if (_context.Users.Where(user => user.UserName == userIn.UserName).FirstOrDefault() != null)
                 throw new Exception("Username \"" + userIn.UserName + "\" is already taken");
 
             byte[] passwordHash, passwordSalt;
@@ -89,24 +89,27 @@ namespace BulletJournalApi.Services
             userIn.PasswordHash = passwordHash;
             userIn.PasswordSalt = passwordSalt;
 
-            _users.InsertOne(userIn);
+            _context.Users.Add(userIn);
+            _context.SaveChanges();
 
             return userIn;
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
-            _users.DeleteOne(user => user.Id == id);
+            var userToDelete = _context.Users.Find(id);
+            _context.Users.Remove(userToDelete);
+            _context.SaveChanges();
         }
 
         public IEnumerable<User> GetAll()
         {
-            return _users.Find<User>(u => true).ToList();
+            return _context.Users.Where(u => true).ToList();
         }
 
-        public User GetById(string id)
+        public User GetById(int id)
         {
-            return _users.Find<User>(user => user.Id == id).FirstOrDefault();
+            return _context.Users.FirstOrDefault(user => user.Id == id);
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
