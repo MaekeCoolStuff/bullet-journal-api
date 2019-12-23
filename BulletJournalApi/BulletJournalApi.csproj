@@ -3,11 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>80483ff7-8317-4ba9-a99a-b64e5614bdac</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/21c667c2-8105-4b0a-a363-4bd1daf60e3e/resourcegroups/bullet-journal/providers/microsoft.insights/components/BulletJournalApi</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
@@ -28,6 +30,10 @@
   <ItemGroup>
     <ProjectReference Include="..\BulletJournal.Data\BulletJournal.Data.csproj" />
     <ProjectReference Include="..\BulletJournal.Domain\BulletJournal.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 
