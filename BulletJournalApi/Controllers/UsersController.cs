@@ -37,10 +37,10 @@ namespace BulletJournalApi.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]AuthenticateModel model)
         {
-            var user = _userService.Authenticate(model.Username, model.Password);
+            var user = _userService.Authenticate(model.EmailAddress, model.Password);
 
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Email or password is incorrect" });
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_settings.AuthSecret);
@@ -60,8 +60,9 @@ namespace BulletJournalApi.Controllers
             return Ok(new
             {
                 Id = user.Id,
-                Username = user.UserName,
+                EmailAddress = user.EmailAddress,
                 FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
                 LastName = user.LastName,
                 Token = tokenString
             });

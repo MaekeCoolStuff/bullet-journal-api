@@ -11,7 +11,7 @@ namespace BulletJournalApi.Services
 {
     public interface IUserService
     {
-        User Authenticate(string username, string password);
+        User Authenticate(string email, string password);
         IEnumerable<User> GetAll();
         User GetById(int id);
         User Create(User user, string password);
@@ -27,14 +27,14 @@ namespace BulletJournalApi.Services
             _context = context;
         }
 
-        public User Authenticate(string username, string password)
+        public User Authenticate(string email, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.Users.Where<User>(user => user.UserName == username).FirstOrDefault();
+            var user = _context.Users.Where<User>(user => user.EmailAddress == email).FirstOrDefault();
 
-            // check if username exists
+            // check if user exists
             if (user == null)
                 return null;
 
@@ -48,7 +48,7 @@ namespace BulletJournalApi.Services
 
         public void Update(User userIn, string password = null)
         {
-            var user = _context.Users.Where<User>(user => user.UserName == userIn.UserName).FirstOrDefault();
+            var user = _context.Users.Where<User>(user => user.EmailAddress == userIn.EmailAddress).FirstOrDefault();
 
             if (user == null)
                 throw new Exception("User not found");
@@ -80,8 +80,8 @@ namespace BulletJournalApi.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new Exception("Password is required");
 
-            if (_context.Users.Where(user => user.UserName == userIn.UserName).FirstOrDefault() != null)
-                throw new Exception("Username \"" + userIn.UserName + "\" is already taken");
+            if (_context.Users.Where(user => user.EmailAddress == userIn.EmailAddress).FirstOrDefault() != null)
+                throw new Exception("Email \"" + userIn.EmailAddress + "\" is already taken");
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);

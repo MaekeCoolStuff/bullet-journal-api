@@ -4,14 +4,16 @@ using BulletJournal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BulletJournal.Data.Migrations
 {
     [DbContext(typeof(BulletJournalContext))]
-    partial class BulletJournalContextModelSnapshot : ModelSnapshot
+    [Migration("20191224191214_changed-to-email")]
+    partial class changedtoemail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
